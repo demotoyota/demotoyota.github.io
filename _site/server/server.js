@@ -17,7 +17,22 @@ app.post('/export-files-estimate', (req, res) => {
         .then(response => res.json(response.data))
         .catch(e => console.log(e + ''))
 })
+app.get('*', (req, res) => {
+    const baseurl = 'http://api.test.toyota.byte.vn'
+    const { path } = req
+    console.log(baseurl+path)
+    axios({
+        method: 'get',
+        url: baseurl + path,
+        headers: {
+            "Authorization": "X-XSRF-Token true",
+            "Host":"api.test.toyota.byte.vn",
+            "Origin":"http://www.toyota.com.vn"
+        }
+    })
+        .then(res => console.log(res.data))
+    return res.json({ a: 3 })
 
-
+})
 const port = process.env.PORT || 3000
-app.listen(port, () => console.log('Server is running on port ' + port))
+app.listen(port, () => console.log('Server is run ning on port ' + port))
