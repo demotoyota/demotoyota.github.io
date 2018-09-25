@@ -37,7 +37,7 @@ const downloadFile = (file, filepath) => {
   })
 }
 const images = fs.readFileSync('./images.txt', { encoding: 'utf8' }).split('\n')
-start()
+// start()
 async function start() {
   for (let image of images) {
     await downloadFile(image, '../' + getFilePath(image))

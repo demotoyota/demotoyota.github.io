@@ -5,12 +5,11 @@ const fs = require('fs')
 
 const createDataCarJson = require('./create-data-car-json.js')
 const createFileCarMd = require('./create-file-car-md.js')
-const downloadFile = require('./downloadFile.js')
+// const downloadFile = require('./downloadFile.js')
 const getDongXe = require('./get-dong-xe.js')
 
 const links = fs.readFileSync('./cars.txt', { encoding: 'utf8' }).split('\n')
 const link = links[0]
-
 const getData = url => axios.get(url).then(res => res.data)
 
 const getFilePath = file => {
@@ -30,6 +29,7 @@ const sleep = ms => {
 getData(link)
     .then(async body => {
         const $ = cheerio.load(body)
+
         const moTaXe = $('#sec_dt_01')
         const ten_xe = $('#spTitleCar').text().trim()
         const dong_xe = getDongXe(ten_xe)
@@ -42,7 +42,7 @@ getData(link)
 
         const banner_data = $('.banner_img .img img').data()
         let banner = banner_data.original
-        await downloadFile(banner, getFilePath(banner))
+        // await downloadFile(banner, getFilePath(banner))
         banner = getFilePath(banner)
 
 
@@ -62,8 +62,20 @@ getData(link)
             const newPath = getFilePath(img)
             colorData.img = newPath
             colors.push(colorData)
-            await downloadFile(img, newPath)
+            // await downloadFile(img, newPath)
         }
+        // Dong xe
+        const cac_mau_xe_khac = []
+        $("#sec_dt_02 .item_sm").each((index, element) => {
+            let item_name = $(element).find('.name_sm')[0]
+            item_name = $(item_name).text().trim()
+            let item_price = $(element).find('.price')[0]
+            item_price = $(item_price).html().trim()
+            let item_image = $(element).find('.img a img').attr('data-original')
+            let item_href = $(element).find('.img a').attr('data-href')
+            cac_mau_xe_khac.push({ item_name, item_price, item_image, item_href })
+        })
+        // Thu Vien
         const thuvien1 = []
         const thuvien1s = $('.list_01 div a img')
         for (let i = 0; i < thuvien1s.length; i++) {
@@ -71,7 +83,7 @@ getData(link)
             const img = $(image).data().original
             const newPath = getFilePath(img)
             thuvien1.push(newPath)
-            await downloadFile(img, newPath)
+            // await downloadFile(img, newPath)
         }
         const thuvien2 = []
         const thuvien2s = $('.list_02 div a img')
@@ -80,7 +92,7 @@ getData(link)
             const img = $(image).data().original
             const newPath = getFilePath(img)
             thuvien2.push(newPath)
-            await downloadFile(img, newPath)
+            // await downloadFile(img, newPath)
         }
 
         // Begin ngoai that
@@ -92,7 +104,7 @@ getData(link)
         let ngoaithat_thumb = $(ngoaithat).find('.img_banner img').data() || ''
         ngoaithat_thumb = ngoaithat_thumb.original || ''
         if (ngoaithat_thumb) {
-            await downloadFile(ngoaithat_thumb, getFilePath(ngoaithat_thumb))
+            // await downloadFile(ngoaithat_thumb, getFilePath(ngoaithat_thumb))
             ngoaithat_thumb = getFilePath(ngoaithat_thumb)
         }
         const ngoaithat_images = []
@@ -105,7 +117,7 @@ getData(link)
             let text = $(item).find('.txt_sl')[0]
             text = $(text).text()
             ngoaithat_images.push({ img: newPath, text })
-            await downloadFile(img, newPath)
+            // await downloadFile(img, newPath)
         }
 
         const ngoai_that_data = {
@@ -123,7 +135,7 @@ getData(link)
         let noithat_description = $(noithat).find('.txt_dt_2')
         noithat_description = $(noithat_description).text().trim() || ''
         let noithat_thumb = $(noithat).find('.img_banner img').data().original
-        await downloadFile(noithat_thumb, getFilePath(noithat_thumb))
+        // await downloadFile(noithat_thumb, getFilePath(noithat_thumb))
         noithat_thumb = getFilePath(noithat_thumb)
         const noithat_images = []
         const noithat_images_items = $(noithat).find('.slide_sm .item')
@@ -135,7 +147,7 @@ getData(link)
             let text = $(item).find('.txt_sl')[0]
             text = $(text).text()
             noithat_images.push({ img: newPath, text })
-            await downloadFile(img, newPath)
+            // await downloadFile(img, newPath)
         }
         const noi_that_data = {
             title: noithat_title,
@@ -158,7 +170,7 @@ getData(link)
             let van_hanh_description = $(van_hanh_item).find('.txt2')[0]
             van_hanh_description = $(van_hanh_description).text().trim() || ''
             van_hanh.push({ image: getFilePath(van_hanh_image), title: van_hanh_title, description: van_hanh_description })
-            await downloadFile(van_hanh_image, getFilePath(van_hanh_image))
+            // await downloadFile(van_hanh_image, getFilePath(van_hanh_image))
         }
         const an_toan = []
         const an_toan_items = $('#tab_vh_03 ul .item a .inner')
@@ -171,7 +183,7 @@ getData(link)
             let an_toan_description = $(an_toan_item).find('.txt2')[0]
             an_toan_description = $(an_toan_description).text().trim() || ''
             an_toan.push({ image: getFilePath(an_toan_image), title: an_toan_title, description: an_toan_description })
-            await downloadFile(an_toan_image, getFilePath(an_toan_image))
+            // await downloadFile(an_toan_image, getFilePath(an_toan_image))
         }
         const tinh_nang_noi_bat = { van_hanh, an_toan }
         // End Tinh nang noi bat
@@ -209,7 +221,7 @@ getData(link)
             let file_name = $(file).find('.file_name')[0]
             let title = $(file_name).text().trim()
             catalouge.push({ title, link: newPath })
-            await downloadFile(link, newPath)
+            // await downloadFile(link, newPath)
         }
         // End catalouge
 
@@ -221,6 +233,7 @@ getData(link)
             banner,
             thong_tin_xe,
             colors,
+            cac_mau_xe_khac,
             thuvien1,
             thuvien2,
             ngoai_that_data,
@@ -234,4 +247,5 @@ getData(link)
         createFileCarMd(url)
         return 1
     })
+    .catch(e => console.log(e + ''))
 
