@@ -27,7 +27,7 @@ const downloadFile = (file, filepath) => {
       if (!fs.existsSync(dir)) {
         await createDir(dir)
       }
-      download('http://www.toyota.com.vn' + file, filepath, () => {
+      download('http://www.toyota.com.vn/' + file, filepath, () => {
         console.log('Downloaded', file, filepath)
         resolve(filepath)
       })
@@ -37,6 +37,7 @@ const downloadFile = (file, filepath) => {
   })
 }
 const images = fs.readFileSync('./images.txt', { encoding: 'utf8' }).split('\n')
+
 // start()
 async function start() {
   for (let image of images) {

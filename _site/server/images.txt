@@ -1,1 +1,2 @@
-data/categories/890/Image-1-2.png?width=280
+data/news/3961/4qvufr.png?w=250&h=145&mode=crop
+data/news/3961/4qvufr.png?w=250&h=145&mode=crop

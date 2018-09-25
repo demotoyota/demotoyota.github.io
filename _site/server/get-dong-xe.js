@@ -11,7 +11,10 @@ const getDongXe = ten_xe => {
         'Hiace',
         'Alphard',
         'Land Cruiser Prado',
-        'Yaris'
+        'Yaris',
+        'Wigo',
+        'Rush',
+        'Avanza'
     ]
     const dong_xe = list_dong_xe.filter(item => ten_xe.includes(item))[0] || ''
     return dong_xe
